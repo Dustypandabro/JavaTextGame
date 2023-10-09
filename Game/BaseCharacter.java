@@ -2,14 +2,24 @@ import java.util.*;
 import java.io.IOException;
 import java.time.*;
 
+/*
+Wizard-
+Barbarian-
+Viking-
+Hunter-
+Deathwalker-
+*/
+
 public class BaseCharacter
 {
 	public String name;
-	public int health;
-	public int exp;
-	public int stamina;
-	public int gold;
-	public int magic;
+	public String type = "Normal";
+	public int health = 100;
+	public int def = 50;
+	public int exp = 0;
+	public int stamina = 100;
+	public int gold = 0;
+	public int magic = 0;
 	
 	public String getName()
 	{
@@ -20,6 +30,12 @@ public class BaseCharacter
 	public void setName(String newName)
 	{
 		this.name = newName;
+		
+	}
+	
+	public String getType()
+	{
+		return type;
 		
 	}
 	
