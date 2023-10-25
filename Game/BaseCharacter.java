@@ -16,10 +16,37 @@ public class BaseCharacter
 	public String type = "Normal";
 	public int health = 100;
 	public int def = 50;
+	public int strength = 20;
 	public int exp = 0;
 	public int stamina = 100;
 	public int gold = 0;
-	public int magic = 0;
+	
+	/////////////////////////////////////////
+	
+	public int dealDmg()
+	{
+		int dmg = getStrength()/10;
+		return dmg;
+		
+	}
+	
+	public void takeDmg(int dmg)
+	{
+		int remHp = 0 - dmg;
+		setHealth(getHealth() + remHp);
+		
+	}
+	
+	public String Say()
+	{
+		Scanner words = new Scanner(System.in);
+		String say = words.nextLine();
+		
+		return say;
+		
+	}
+	
+	/////////////////////////////////////////
 	
 	public String getName()
 	{
@@ -48,6 +75,30 @@ public class BaseCharacter
 	public void setHealth(int hp)
 	{
 		this.health = hp;
+		
+	}
+	
+	public int getStrength()
+	{
+		return strength;
+		
+	}
+	
+	public void setStrength(int str)
+	{
+		this.strength = str;
+		
+	}
+	
+	public int getDef()
+	{
+		return def;
+		
+	}
+	
+	public void setDef(int sdef)
+	{
+		this.def = sdef;
 		
 	}
 	
@@ -84,18 +135,6 @@ public class BaseCharacter
 	public void setGold(int coin)
 	{
 		this.gold += coin;
-		
-	}
-	
-	public int getMagic()
-	{
-		return magic;
-		
-	}
-	
-	public void setMagic(int mana)
-	{
-		this.magic = mana;
 		
 	}
 	
