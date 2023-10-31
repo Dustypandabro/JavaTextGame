@@ -12,11 +12,14 @@ enum GameDiff
 	
 }
 
-class RunGameBoi
+public class RunGameBoi
 {
 	public int ctype = 0;
 	public int gdiff = 1;
+	public int dmgMod = 1;
 	public BaseCharacter player = null;
+	
+	public Location world = new Location();
 	
 	public void SelectGamediff()
 	{
@@ -29,6 +32,7 @@ class RunGameBoi
 		
 		
 		boolean diffselect = false;
+		String gds = "Easy";
 		
 		while(diffselect != true)
 		{
@@ -37,22 +41,25 @@ class RunGameBoi
 		
 			if(gdiff == 1)
 			{
-				GameDiff gamediff = GameDiff.EASY;
-				System.out.println("The diff of the game is: " + gamediff);
+				GameDiff gamediffs = GameDiff.EASY;
+				gds = "Easy";
+				System.out.println("The diff of the game is: " + gamediffs);
 				diffselect = true;
 			
 			}
 			else if(gdiff == 2)
 			{
-				GameDiff gamediff = GameDiff.MEDIUM;
-				System.out.println("The diff of the game is: " + gamediff);
+				GameDiff gamediffs = GameDiff.MEDIUM;
+				gds = "Med";
+				System.out.println("The diff of the game is: " + gamediffs);
 				diffselect = true;
 			
 			}
 			else if(gdiff == 3)
 			{
-				GameDiff gamediff = GameDiff.HARD;
-				System.out.println("The diff of the game is: " + gamediff);
+				GameDiff gamediffs = GameDiff.HARD;
+				gds = "Hard";
+				System.out.println("The diff of the game is: " + gamediffs);
 				diffselect = true;
 			
 			}
@@ -63,6 +70,8 @@ class RunGameBoi
 			}
 			
 		}
+		
+		diffucltyModifier(gds);
 		
 	}
 	
@@ -152,7 +161,7 @@ class RunGameBoi
 		
 	}
 	
-	public void Battle(BaseCharacter dummy1, BaseCharacter dummy2)
+	public void Battle(BaseCharacter dummy2) //BaseCharacter dummy1, BaseCharacter dummy2) //balance
 	{
 		//BaseCharacter p1 = new BaseCharacter();
 		//BaseCharacter p2 = new Barbarian();
@@ -169,61 +178,34 @@ class RunGameBoi
 		int atcdmg2 = 0;
 		int round = 1;
 		
-		while(dummy1.getHealth() > 0 && dummy2.getHealth() > 0)
+		while(player.getHealth() > 0 && dummy2.getHealth() > 0)
 		{
 			System.out.println(round);
-			atcdmg1 = dummy1.dealDmg();
+			atcdmg1 = player.dealDmg();
 			dummy2.takeDmg(atcdmg1);
-			System.out.println("Done this amount of dmg: " + atcdmg1);
+			System.out.println("You done this amount of dmg: " + atcdmg1);
 			if(dummy2.getHealth() > 0)
 			{
-				atcdmg2 =dummy2.dealDmg();
-				dummy1.takeDmg(atcdmg2);
-				System.out.println("Done this amount of dmg: " + atcdmg2);
+				atcdmg2 = (dummy2.dealDmg() * (1 + dmgMod)); //Enemy attacks mod
+				player.takeDmg(atcdmg2);
+				System.out.println("Enemy done this amount of dmg: " + atcdmg2);
 				
 			}
 			
 			round++;
 			
 		}
-		System.out.println("Jobs done");
 		
-	}
-	
-	public void testWorldshit()
-	{
-		//idea of how to move to next loc etc.
-		//Convert number to loc and set new loc
-		/*System.out.println("Testing shit now");
-		int test = 1;
-		
-		String tests = String.valueOf(test);;
-		tests = world.currentLoc;
-		System.out.println(test);
-		System.out.println(tests);*/
-		
-		System.out.println("Testing world shit");
-		Location world = new Location();
-		world.loc();
-		System.out.println(world.getCurrentLoc());
-		world.setCurrentLoc("Mountains");
-		System.out.println("Showing connected Locations");
-		System.out.println(world.Mountains);
-		
-		if(world.isLocCon(world.Castle, "Home"))
+		if(player.getHealth() > 0)
 		{
-			System.out.println("On our way!");
-			world.setCurrentLoc("Home");
+			System.out.println("You won!");
 			
 		}
 		else
 		{
-			System.out.println("This doesn't work");
+			System.out.println("You lose!");
 			
 		}
-		
-		System.out.println("Done");
-		System.out.println(world.getCurrentLoc());
 		
 	}
 	
@@ -273,11 +255,11 @@ class RunGameBoi
 	public void questShit()
 	{
 		Quests MainQuest = new Quests();
-		MainQuest.createQuest("Main", "This is the main quest");
+		MainQuest.createQuest("Main", "This is the main quest", "start the quest");
 		MainQuest.showQuestInfo();
 		
 		Quests SideQuest = new Quests();
-		SideQuest.createQuest("Side", "This is the side quest");
+		SideQuest.createQuest("Side", "This is the side quest", "start the quest obj");
 		SideQuest.showQuestInfo();
 		
 		MainQuest.setComplete();
@@ -285,6 +267,7 @@ class RunGameBoi
 		MainQuest.addQuestObjectives("Go to the Mountain.");
 		MainQuest.addQuestObjectives("Go to the Castle.");
 		MainQuest.showQuestInfo();
+		MainQuest.finishQuestObj();
 		MainQuest.finishQuestObj();
 		MainQuest.isQuestDone();
 		SideQuest.isQuestDone();
@@ -295,19 +278,242 @@ class RunGameBoi
 		
 	}
 	
-	public void itemStuff()
+	public void invetoryShit() // can be used for shop
 	{
+		Items Longsword = new Items();
+		Longsword.createItem("Long sword", "Long swords", 35, 150);
+		
 		Items sword = new Items();
-		sword.createItem("Sword", "Short sword", 120);
+		sword.createItem("Sword", "Short sword", 25, 120);
 		sword.showItemInfo();
+		
+		Inventory playerInventory = new Inventory();
+		playerInventory.addToInventory(sword);
+		playerInventory.addToInventory(Longsword);
+		playerInventory.showInventory();
+		System.out.println("Removing item");
+		playerInventory.removeItem(sword);
+		playerInventory.showInventory();
+		playerInventory.equipAnItem(sword);
+		System.out.println("Item equiped");
+		playerInventory.showEquipedItem();
+		System.out.println("Item equiped");
+		playerInventory.equipAnItem(Longsword);
+		playerInventory.showEquipedItem();
+		
+		System.out.println("Done");
 		
 	}
 	
+	public void diffucltyModifier(String diff)
+	{
+		if(diff == "Easy")
+		{
+			dmgMod = 1;
+			
+		}
+		else if(diff == "Med")
+		{
+			dmgMod = 2;
+			
+		}
+		else
+		{
+			dmgMod = 3;
+			
+		}
+		
+	}
+	
+	public boolean isPlayeralive()
+	{
+		if(player.getHealth() > 0)
+		{
+			return true;
+			
+		}
+		
+		return false;
+		
+	}
+	
+	///////////////////////////////
+	//Movement through the game
+	
+	public void showConLoc()
+	{
+		if(world.getCurrentLoc().equals("Home"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.Home);
+			
+		}
+		else if(world.getCurrentLoc().equals("Castle"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.Castle);
+			
+		}
+		else if(world.getCurrentLoc().equals("Shack"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.Shack);
+			
+		}
+		else if(world.getCurrentLoc().equals("Mountains"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.Mountains);
+			
+		}
+		else
+		{
+			System.out.println("Nope");
+			
+		}
+		
+	}
+	
+	public void moveToLoc(String loc)
+	{
+		if(world.getCurrentLoc().equals("Home"))
+		{
+			if(world.isLocCon(world.Home, loc))
+			{
+				world.setCurrentLoc(loc);
+			
+			}
+			
+		}
+		if(world.getCurrentLoc().equals("Castle"))
+		{
+			if(world.isLocCon(world.Castle, loc))
+			{
+				world.setCurrentLoc(loc);
+			
+			}
+			
+		}
+		if(world.getCurrentLoc().equals("Mountains"))
+		{
+			if(world.isLocCon(world.Mountains, loc))
+			{
+				world.setCurrentLoc(loc);
+			
+			}
+			
+		}
+		if(world.getCurrentLoc().equals("Shack"))
+		{
+			if(world.isLocCon(world.Shack, loc))
+			{
+				world.setCurrentLoc(loc);
+			
+			}
+			
+		}
+		else
+		{
+			System.out.println("mis vis");
+			
+		}
+		
+	}
+	
+	public void movement()
+	{
+		showConLoc();
+		
+		System.out.print("Type in location: ");
+		Scanner whereTo = new Scanner(System.in);
+		String loc = whereTo.nextLine();
+		
+		moveToLoc(loc);
+		
+	}
+	
+	public void explore() //add more locations and build
+	{	
+		movement();
+		
+		if(world.getCurrentLoc().equals("Home"))
+		{
+			System.out.println("You are here: " + loc);
+			
+		}
+		else if(world.getCurrentLoc().equals("Castle"))
+		{
+			System.out.println("You are here: " + loc);
+			
+		}
+		else if(world.getCurrentLoc().equals("Shack"))
+		{
+			System.out.println("You are here: " + loc);
+			
+		}
+		else if(world.getCurrentLoc().equals("Mountains"))
+		{
+			System.out.println("You are here: " + loc);
+			
+		}
+		else
+		{
+			System.out.println("Invalid location?");
+			System.out.println("You awake awkwardly at home wondering wtf happened? Your day continues...");
+			world.setCurrentLoc("Home");
+			
+		}
+		
+	}
+	
+	///////////////////////////////
+	//Main game method
+	
 	public void runGame()
 	{	
-		//System.out.println("Awe");
+		SelectGamediff();
+		selectChar();
+		world.loc();
 		
-		itemStuff();
+		//Game loop
+		BaseCharacter p2 = new Barbarian();
+		
+		while(isPlayeralive())
+		{
+			System.out.println("You are currently in -> " + world.getCurrentLoc());
+			System.out.println("What will you like to do?");
+			
+			Scanner action = new Scanner(System.in);
+			int act = action.nextInt();
+			
+			if(act == 1)
+			{
+				explore();
+				
+			}
+			else if(act == 2)
+			{
+				System.out.println("You eat.");
+				
+			}
+			else if(act == 3)
+			{
+				System.out.println("You sleep.");
+				
+			}
+			else
+			{
+				System.out.println("Invalid");
+				
+			}
+			
+			//Battle(p2); //player, p2);
+			//System.out.println("Done");
+			
+		}
+		
+		System.out.println(world.getCurrentLoc());
+		System.out.println(dmgMod);
 		
 	}
 	

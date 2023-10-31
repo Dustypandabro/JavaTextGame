@@ -86,6 +86,41 @@ public boolean delete(E item)
 	   return true;
    }
    
+   /*public void removeItem(E item)
+   {
+	   if(head == null)
+	   {
+		   return;
+		   
+	   }
+	   
+	   if(head.data.compareTo(item) == 0)
+	   {
+		   head = head.next;
+		   return;
+		   
+	   }
+	   
+	   Node current = head;
+	   Node prev = null;
+	   
+	   while(current != null && current.data.compareTo(item) != 0)
+	   {
+		   prev = current;
+		   current = current.next;
+		   
+	   }
+	   
+	   if(current == null)
+	   {
+		   return;
+		   
+	   }
+	   
+	   prev.next = current.next;
+	   
+   }*/
+   
    //////////////////////////////////////////////////
    
    public MyLinkedList getUnique(MyLinkedList param)

@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.IOException;
 import java.time.*;
+import java.io.*;
 
 public class Location
 {
@@ -37,7 +38,7 @@ public class Location
 	
 	public void loc()
 	{
-		System.out.println("This is the world of Zagaroth");
+		//System.out.println("This is the world of Zagaroth");
 		
 		Home.append("Castle");
 		Home.append("Shack");

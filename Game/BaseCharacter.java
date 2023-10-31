@@ -15,9 +15,11 @@ public class BaseCharacter
 	public String name;
 	public String type = "Normal";
 	public int health = 100;
+	public int maxHealth = 100;//
 	public int def = 50;
 	public int strength = 20;
 	public int exp = 0;
+	public int level = 0;
 	public int stamina = 100;
 	public int gold = 0;
 	
@@ -46,7 +48,38 @@ public class BaseCharacter
 		
 	}
 	
+	public void checkLevelUp()
+	{
+		int reqXP = 0;
+		reqXP = (getLevel() * 150);
+		
+		if(exp > reqXP)
+		{
+			level++;
+			
+		}
+		
+	}
+	
 	/////////////////////////////////////////
+	
+	public int getLevel()
+	{
+		return level;
+		
+	}
+	
+	public int getMaxHeatlh()
+	{
+		return maxHealth;
+		
+	}
+	
+	public void setMaxHeatlh(int mhp)
+	{
+		this.maxHealth = mhp;
+		
+	}
 	
 	public String getName()
 	{
@@ -75,6 +108,12 @@ public class BaseCharacter
 	public void setHealth(int hp)
 	{
 		this.health = hp;
+		
+		if(this.health > getMaxHeatlh())
+		{
+			this.health = getMaxHeatlh();
+			
+		}
 		
 	}
 	

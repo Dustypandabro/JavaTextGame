@@ -86,10 +86,11 @@ public class Quests
 		
 	}
 	
-	public void createQuest(String name, String desc)
+	public void createQuest(String name, String desc, String obj)
 	{
 		setName(name);
 		setQDesc(desc);
+		addQuestObjectives(obj);
 		
 	}
 	
