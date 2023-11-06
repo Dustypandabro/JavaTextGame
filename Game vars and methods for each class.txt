@@ -122,8 +122,243 @@ public int strength
 public int stamina
 
 Methods:
+@Override
+public int dealDmg()
+@Override
+public int takeDmg(int dmg)
+@Override
+public String getType()
+@Override
+public int getMaxHeatlh()
+@Override
+public int getHealth()
+@Override
+public void setHealth(int hp)
+@Override
+public int getStrength()
+@Override
+public void setStrength(int str)
+@Override
+public int getDef()
+@Override
+public void setDef(int sdef)
+@Override
+public int getStam()
+@Override
+public void setStam(int stam)
 
+# Viking
+Vars:
+public String type
+public int health
+public int maxHealth
+public int def
+public int strength
+public int stamina
 
+Methods:
+@Override
+public int dealDmg()
+@Override
+public int takeDmg(int dmg)
+@Override
+public String getType()
+@Override
+public int getMaxHeatlh()
+@Override
+public int getHealth()
+@Override
+public void setHealth(int hp)
+@Override
+public int getStrength()
+@Override
+public void setStrength(int str)
+@Override
+public int getDef()
+@Override
+public void setDef(int sdef)
+@Override
+public int getStam()
+@Override
+public void setStam(int stam)
 
+# Wizard
+Vars:
+public String type
+public int health
+public int maxHealth
+public int def
+public int strength
+public int exp
+public int stamina
+public int magic
 
+Methods:
+@Override
+public int dealDmg()
+@Override
+public int takeDmg(int dmg)
+@Override
+public String getType()
+@Override
+public int getMaxHeatlh()
+@Override
+public int getHealth()
+@Override
+public void setHealth(int hp)
+@Override
+public int getStrength()
+@Override
+public void setStrength(int str)
+@Override
+public int getDef()
+@Override
+public void setDef(int sdef)
+@Override
+public int getXP()
+@Override
+public void setXP(int xp)
+@Override
+public int getStam()
+@Override
+public void setStam(int stam)
+public int getMagic()
+public void setMagic(int mana)
 
+# Book
+Vars:
+
+Methods:
+public String createBook(String bookName)
+public void WriteInBook(String filename, String story)
+public void ReadFromBook(String readFile)
+public void DelBook(String delFile)
+public void removeLastLine(String fname)
+public void book()
+
+# Inventory
+Vars:
+public MyLinkedList<String> inventory = new MyLinkedList<>();
+public Items equipedItem = new Items();
+
+Methods:
+public void equipAnItem(Items item)
+public void showEquipedItem()
+public void addToInventory(Items item)
+public void removeItem(Items item)
+public void showInventory()
+
+# Items
+Vars:
+public String itemName
+public String itemType
+public int dmgIncrease
+public int itemValue
+public boolean itemEquiped
+
+Methods:
+public void equipItem()
+public void dequipItem()
+public boolean checkIfItemEquiped()
+public String getName()
+public void setName(String name)
+public String getType()
+public void setType(String type)
+public int getValue()
+public void setvalue(int val)
+public void showItemInfo()
+public void setDmgIn(int dmg)
+public int getDmgIn()
+public void createItem(String name, String type, int dmg, int val)
+
+# Location
+Vars:
+public MyLinkedList<String> Home = new MyLinkedList<String>();
+public MyLinkedList<String> FarmVillage = new MyLinkedList<String>();
+public MyLinkedList<String> Castle = new MyLinkedList<String>();
+public MyLinkedList<String> CastleKeep = new MyLinkedList<String>();
+public MyLinkedList<String> CastleGrounds = new MyLinkedList<String>();
+public MyLinkedList<String> Shack = new MyLinkedList<String>();
+public MyLinkedList<String> Mountains = new MyLinkedList<String>();
+public MyLinkedList<String> Volcano = new MyLinkedList<String>();
+public MyLinkedList<String> DarkFort = new MyLinkedList<String>();
+public MyLinkedList<String> DarkFortGround = new MyLinkedList<String>();
+public MyLinkedList<String> Dungeon = new MyLinkedList<String>();
+public MyLinkedList<String> Beach = new MyLinkedList<String>();
+public MyLinkedList<String> OceanKeep = new MyLinkedList<String>();
+public String currentLoc = "Home";
+
+Methods:
+public String getCurrentLoc()
+public void setCurrentLoc(String whereTo)
+public boolean isLocCon(MyLinkedList list, String loc)
+public void loc()
+
+# Quests
+Vars:
+public String questName;
+public String questDesc;
+public boolean isComplete = false;
+public int objectives = 0;
+public MyLinkedList<String> obj = new MyLinkedList<>();
+
+Methods:
+public String getName()
+public void setName(String qName)
+public String getQDesc()
+public void setQDesc(String dName)
+public void setComplete()
+public boolean isQuestDone()
+public void addQuestObjectives(String objective)
+public void getObj()
+public void finishQuestObj()
+public void showQuestInfo()
+public void createQuest(String name, String desc, String obj)
+
+# Reputation
+vars:
+public int homeRep
+public int farmVillageRep
+public int castleRep
+public int darkFortRep
+public int oceanKeepRep
+
+Methods:
+public int getHRep()
+public void setHRep(int rep)
+public void Reputation()
+
+# RunGameBoi
+Vars:
+public int ctype = 0;
+public int gdiff = 1;
+public int dmgMod = 1;
+public boolean firstTime = true;
+public String bookName = "";
+public BaseCharacter player = null;
+public Book book1 = new Book();
+public Location world = new Location();
+public Inventory playerInventory = new Inventory();
+
+Methods:
+public void SelectGamediff()
+public void selectChar()
+public void diffucltyModifier(String diff)
+public int RNG()
+public void Battle(BaseCharacter dummy2)
+public String nameBook(String name)
+public void writeToBook(String bname, String text)
+public void readFromBook(String bname)
+public void removeLastLine(String fname)
+public void useBook()
+public void RepStuff()
+public void questShit()
+public void invetoryShit()
+public void killPlayer()
+public boolean isPlayeralive()
+public void showConLoc()
+public void moveToLoc(String loc)
+public void movement()
+public void explore()
+public void createGameSettings()
+public void runGame()
