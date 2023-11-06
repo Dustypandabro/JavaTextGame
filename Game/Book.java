@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
@@ -98,6 +99,61 @@ public class Book
 		else
 		{
 			System.out.println("Failed the delete");
+			
+		}
+		
+	}
+	
+	public void removeLastLine(String fname)
+	{
+		File bookfile = new File(fname);
+		
+		if(!bookfile.exists())
+		{
+			System.out.println("File not found");
+			return;
+			
+		}
+		
+		try
+		{
+			List<String> lines = new ArrayList<>();
+			Scanner scan = new Scanner(bookfile);
+			
+			while(scan.hasNextLine())
+			{
+				lines.add(scan.nextLine());
+				
+			}
+			
+			if(lines.size() > 0)
+			{
+				lines.remove(lines.size() - 1);
+				
+				FileWriter write = new FileWriter(bookfile);
+				
+				for(String line : lines)
+				{
+					write.write(line + "\n");
+					
+				}
+				
+				write.close();
+				
+				System.out.println("Last line removed from " + bookfile.getName());
+				
+			}
+			else
+			{
+				System.out.println("File is empty. Nothing to remove");
+				
+			}
+			
+		}
+		catch(IOException e)
+		{
+			System.out.println("Error occured: " + e.getMessage());
+			e.printStackTrace();
 			
 		}
 		

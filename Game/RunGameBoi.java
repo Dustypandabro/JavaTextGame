@@ -17,9 +17,15 @@ public class RunGameBoi
 	public int ctype = 0;
 	public int gdiff = 1;
 	public int dmgMod = 1;
+	public boolean firstTime = true;
+	public String bookName = "";
 	public BaseCharacter player = null;
-	
+	public Book book1 = new Book();
 	public Location world = new Location();
+	public Inventory playerInventory = new Inventory();
+	
+	///////////////////////////////
+	//Game settings
 	
 	public void SelectGamediff()
 	{
@@ -161,6 +167,38 @@ public class RunGameBoi
 		
 	}
 	
+	public void diffucltyModifier(String diff)
+	{
+		if(diff == "Easy")
+		{
+			dmgMod = 1;
+			
+		}
+		else if(diff == "Med")
+		{
+			dmgMod = 2;
+			
+		}
+		else
+		{
+			dmgMod = 3;
+			
+		}
+		
+	}
+	
+	public int RNG()
+	{
+		double rng = (Math.random() * 10);
+		int randn = (int) rng;
+		
+		return randn;
+		
+	}
+	
+	///////////////////////////////
+	//Battle stuff
+	
 	public void Battle(BaseCharacter dummy2) //BaseCharacter dummy1, BaseCharacter dummy2) //balance
 	{
 		//BaseCharacter p1 = new BaseCharacter();
@@ -180,19 +218,31 @@ public class RunGameBoi
 		
 		while(player.getHealth() > 0 && dummy2.getHealth() > 0)
 		{
-			System.out.println(round);
+			System.out.println(" ");
+			System.out.println("This is round: " + round);
+			System.out.println(player.getHealth());
+			
 			atcdmg1 = player.dealDmg();
-			dummy2.takeDmg(atcdmg1);
-			System.out.println("You done this amount of dmg: " + atcdmg1);
+			int thisDmg = dummy2.takeDmg(atcdmg1);
+			System.out.println("You done this amount of dmg: " + thisDmg);
+			System.out.println("Enemy HP left: " + dummy2.getHealth());
 			if(dummy2.getHealth() > 0)
 			{
-				atcdmg2 = (dummy2.dealDmg() * (1 + dmgMod)); //Enemy attacks mod
-				player.takeDmg(atcdmg2);
-				System.out.println("Enemy done this amount of dmg: " + atcdmg2);
+				System.out.println("Enemy turn.");
+				atcdmg2 = (dummy2.dealDmg() * (dmgMod)); //Enemy attacks mod
+				int thisDmg2 = player.takeDmg(atcdmg2);
+				System.out.println("Enemy done this amount of dmg: " + thisDmg2);
+				System.out.println("Your HP left: " + player.getHealth());
 				
 			}
 			
 			round++;
+			
+			if(round == 10)
+			{
+				killPlayer();
+				
+			}
 			
 		}
 		
@@ -204,36 +254,98 @@ public class RunGameBoi
 		else
 		{
 			System.out.println("You lose!");
+			killPlayer();
 			
 		}
 		
 	}
 	
-	public void testbOOK()
+	///////////////////////////////
+	//Book stuff
+	
+	public String nameBook(String name)
 	{
-		Book book1 = new Book();
-		String bName = book1.createBook("Awe");
-		String text = "I have writen this shit!";
-		book1.WriteInBook(bName, text);
+		String bName = book1.createBook(name);
 		
-		book1.ReadFromBook(bName);
-		
-		String text2 = "And this shit!";
-		book1.WriteInBook(bName, text2);
-		book1.ReadFromBook(bName);
-		
-		book1.DelBook(bName);
+		return bName;
 		
 	}
 	
-	public int RNG()
+	public void writeToBook(String bname, String text)
 	{
-		double rng = (Math.random() * 10);
-		int randn = (int) rng;
-		
-		return randn;
+		book1.WriteInBook(bname, text);
 		
 	}
+	
+	public void readFromBook(String bname)
+	{
+		book1.ReadFromBook(bname);
+		
+	}
+	
+	public void removeLastLine(String fname)
+	{
+		book1.removeLastLine(fname);
+		
+	}
+	
+	public void useBook()
+	{	
+		if(firstTime)
+		{
+			System.out.println("First time sing book. Name it!");
+			Scanner bookn = new Scanner(System.in);
+			String bn = bookn.nextLine();
+			bookName = nameBook(bn);
+			firstTime = false;
+			
+		}
+		
+		System.out.println("What would you like to do?");
+		System.out.println("1. Read book.");
+		System.out.println("2. Write Book.");
+		System.out.println("3. Remove last line.");
+		Scanner baction = new Scanner(System.in);
+		int bact = baction.nextInt();
+		
+		boolean whilewrite = true;
+		
+		while(whilewrite)
+		{
+			if(bact == 1)
+			{
+				readFromBook(bookName);
+				whilewrite = false;
+			
+			}
+			else if(bact == 2)
+			{
+				Scanner writeBook = new Scanner(System.in);
+				String writeb = writeBook.nextLine();
+				writeToBook(bookName, writeb);
+				whilewrite = false;
+			
+			}
+			else if(bact == 3)
+			{
+				removeLastLine(bookName);
+				whilewrite = false;
+			
+			}
+			else
+			{
+				System.out.println("Wrong number");
+			
+			}
+			
+		}
+		
+		//book1.DelBook(bName);
+		
+	}
+	
+	///////////////////////////////
+	//Player shit
 	
 	public void RepStuff()
 	{
@@ -287,7 +399,6 @@ public class RunGameBoi
 		sword.createItem("Sword", "Short sword", 25, 120);
 		sword.showItemInfo();
 		
-		Inventory playerInventory = new Inventory();
 		playerInventory.addToInventory(sword);
 		playerInventory.addToInventory(Longsword);
 		playerInventory.showInventory();
@@ -305,23 +416,9 @@ public class RunGameBoi
 		
 	}
 	
-	public void diffucltyModifier(String diff)
+	public void killPlayer()
 	{
-		if(diff == "Easy")
-		{
-			dmgMod = 1;
-			
-		}
-		else if(diff == "Med")
-		{
-			dmgMod = 2;
-			
-		}
-		else
-		{
-			dmgMod = 3;
-			
-		}
+		player.setHealth(0);
 		
 	}
 	
@@ -348,10 +445,28 @@ public class RunGameBoi
 			System.out.println(world.Home);
 			
 		}
+		else if(world.getCurrentLoc().equals("FarmVillage"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.FarmVillage);
+			
+		}
 		else if(world.getCurrentLoc().equals("Castle"))
 		{
 			System.out.println("Showing connected Locations");
 			System.out.println(world.Castle);
+			
+		}
+		else if(world.getCurrentLoc().equals("CastleGrounds"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.CastleGrounds);
+			
+		}
+		else if(world.getCurrentLoc().equals("CastleKeep"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.CastleKeep);
 			
 		}
 		else if(world.getCurrentLoc().equals("Shack"))
@@ -364,6 +479,42 @@ public class RunGameBoi
 		{
 			System.out.println("Showing connected Locations");
 			System.out.println(world.Mountains);
+			
+		}
+		else if(world.getCurrentLoc().equals("Volcano"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.Volcano);
+			
+		}
+		else if(world.getCurrentLoc().equals("DarkFort"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.DarkFort);
+			
+		}
+		else if(world.getCurrentLoc().equals("DarkFortGround"))
+		{
+			System.out.println("Showing connected Locations");
+			System.out.println(world.DarkFortGround);
+			
+		}
+		else if(world.getCurrentLoc().equals("Beach"))
+		{
+			System.out.println("Showing connected locations");
+			System.out.println(world.Beach);
+			
+		}
+		else if(world.getCurrentLoc().equals("OceanKeep"))
+		{
+			System.out.println("Showing connected locations");
+			System.out.println(world.OceanKeep);
+			
+		}
+		else if(world.getCurrentLoc().equals("Dungeon"))
+		{
+			System.out.println("Showing connected locations");
+			System.out.println(world.Dungeon);
 			
 		}
 		else
@@ -381,40 +532,134 @@ public class RunGameBoi
 			if(world.isLocCon(world.Home, loc))
 			{
 				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
 			
 			}
 			
 		}
-		if(world.getCurrentLoc().equals("Castle"))
+		else if(world.getCurrentLoc().equals("FarmVillage"))
+		{
+			if(world.isLocCon(world.FarmVillage, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+				
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("Castle"))
 		{
 			if(world.isLocCon(world.Castle, loc))
 			{
 				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
 			
 			}
 			
 		}
-		if(world.getCurrentLoc().equals("Mountains"))
+		else if(world.getCurrentLoc().equals("CastleGrounds"))
+		{
+			if(world.isLocCon(world.CastleGrounds, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("CastleKeep"))
+		{
+			if(world.isLocCon(world.CastleKeep, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("Mountains"))
 		{
 			if(world.isLocCon(world.Mountains, loc))
 			{
 				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
 			
 			}
 			
 		}
-		if(world.getCurrentLoc().equals("Shack"))
+		else if(world.getCurrentLoc().equals("Volcano"))
+		{
+			if(world.isLocCon(world.Volcano, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("DarkFort"))
+		{
+			if(world.isLocCon(world.DarkFort, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("DarkFortGround"))
+		{
+			if(world.isLocCon(world.DarkFortGround, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("Shack"))
 		{
 			if(world.isLocCon(world.Shack, loc))
 			{
 				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("Beach"))
+		{
+			if(world.isLocCon(world.Beach, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("OceanKeep"))
+		{
+			if(world.isLocCon(world.OceanKeep, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
+			
+			}
+			
+		}
+		else if(world.getCurrentLoc().equals("Dungeon"))
+		{
+			if(world.isLocCon(world.Dungeon, loc))
+			{
+				world.setCurrentLoc(loc);
+				System.out.println("Moving to -> " + world.getCurrentLoc());
 			
 			}
 			
 		}
 		else
 		{
-			System.out.println("mis vis");
+			System.out.println("Wrong location.");
 			
 		}
 		
@@ -434,26 +679,64 @@ public class RunGameBoi
 	
 	public void explore() //add more locations and build
 	{	
-		movement();
-		
 		if(world.getCurrentLoc().equals("Home"))
 		{
-			System.out.println("You are here: " + loc);
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("FarmVillage"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
 			
 		}
 		else if(world.getCurrentLoc().equals("Castle"))
 		{
-			System.out.println("You are here: " + loc);
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("CastleGrounds"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("CastleKeep"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
 			
 		}
 		else if(world.getCurrentLoc().equals("Shack"))
 		{
-			System.out.println("You are here: " + loc);
+			System.out.println("You are here: " + world.getCurrentLoc());
 			
 		}
 		else if(world.getCurrentLoc().equals("Mountains"))
 		{
-			System.out.println("You are here: " + loc);
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("Volcano"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("DarkFort"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("DarkFortGround"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("Beach"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
+			
+		}
+		else if(world.getCurrentLoc().equals("OceanKeep"))
+		{
+			System.out.println("You are here: " + world.getCurrentLoc());
 			
 		}
 		else
@@ -469,19 +752,33 @@ public class RunGameBoi
 	///////////////////////////////
 	//Main game method
 	
-	public void runGame()
-	{	
+	public void createGameSettings()
+	{
 		SelectGamediff();
 		selectChar();
 		world.loc();
 		
-		//Game loop
+		
+	}
+	
+	///////////////////////////////
+	//Game loop
+	public void runGame()
+	{	
+		createGameSettings();
 		BaseCharacter p2 = new Barbarian();
+		//System.out.println(player.getHealth());
 		
 		while(isPlayeralive())
 		{
 			System.out.println("You are currently in -> " + world.getCurrentLoc());
 			System.out.println("What will you like to do?");
+			System.out.println("1. Explore current loc");
+			System.out.println("2. Exit");
+			System.out.println("3. Use book");
+			System.out.println("4. Battle");
+			System.out.println("5. Move");
+			System.out.println("6. Inventory shit");
 			
 			Scanner action = new Scanner(System.in);
 			int act = action.nextInt();
@@ -493,12 +790,27 @@ public class RunGameBoi
 			}
 			else if(act == 2)
 			{
-				System.out.println("You eat.");
+				killPlayer();
 				
 			}
 			else if(act == 3)
 			{
-				System.out.println("You sleep.");
+				useBook();
+				
+			}
+			else if(act == 4)
+			{
+				Battle(p2);
+				
+			}
+			else if(act == 5)
+			{
+				movement();
+				
+			}
+			else if(act == 6)
+			{
+				invetoryShit();
 				
 			}
 			else
@@ -508,12 +820,12 @@ public class RunGameBoi
 			}
 			
 			//Battle(p2); //player, p2);
-			//System.out.println("Done");
 			
 		}
 		
-		System.out.println(world.getCurrentLoc());
-		System.out.println(dmgMod);
+		//System.out.println(world.getCurrentLoc());
+		//System.out.println(dmgMod);
+		System.out.println("Done");
 		
 	}
 	

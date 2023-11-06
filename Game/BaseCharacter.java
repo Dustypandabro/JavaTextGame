@@ -27,15 +27,18 @@ public class BaseCharacter
 	
 	public int dealDmg()
 	{
-		int dmg = getStrength()/10;
+		int dmg = getStrength();
 		return dmg;
 		
 	}
 	
-	public void takeDmg(int dmg)
+	public int takeDmg(int dmg)
 	{
-		int remHp = 0 - dmg;
-		setHealth(getHealth() + remHp);
+		int remHp = dmg - (getDef()/10);
+		int set = getHealth() - remHp;
+		setHealth(set);
+		
+		return remHp;
 		
 	}
 	
@@ -109,9 +112,9 @@ public class BaseCharacter
 	{
 		this.health = hp;
 		
-		if(this.health > getMaxHeatlh())
+		if(health > getMaxHeatlh())
 		{
-			this.health = getMaxHeatlh();
+			health = getMaxHeatlh();
 			
 		}
 		

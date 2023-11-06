@@ -6,25 +6,29 @@ public class Hunter extends BaseCharacter
 {
 	public String type = "Hunter";
 	public int health = 120;
+	public int maxHealth = 120;//
 	public int def = 200;
 	public int strength = 20;
 	public int stamina = 80;
-
+	
 	/////////////////////////////////////////
 	
 	@Override
 	public int dealDmg()
 	{
-		int dmg = getStrength()/10;
+		int dmg = getStrength();
 		return dmg;
 		
 	}
 	
 	@Override
-	public void takeDmg(int dmg)
+	public int takeDmg(int dmg)
 	{
-		int remHp = 0 - dmg;
-		setHealth(getHealth() + remHp);
+		int remHp = dmg - (getDef()/10);
+		int set = getHealth() - remHp;
+		setHealth(set);
+		
+		return remHp;
 		
 	}
 	
@@ -34,6 +38,13 @@ public class Hunter extends BaseCharacter
 	public String getType()
 	{
 		return type;
+		
+	}
+	
+	@Override
+	public int getMaxHeatlh()
+	{
+		return maxHealth;
 		
 	}
 	
@@ -48,6 +59,12 @@ public class Hunter extends BaseCharacter
 	public void setHealth(int hp)
 	{
 		this.health = hp;
+		
+		if(this.health > getMaxHeatlh())
+		{
+			this.health = getMaxHeatlh();
+			
+		}
 		
 	}
 	

@@ -6,9 +6,18 @@ import java.io.*;
 public class Location
 {
 	public MyLinkedList<String> Home = new MyLinkedList<String>();
+	public MyLinkedList<String> FarmVillage = new MyLinkedList<String>();
 	public MyLinkedList<String> Castle = new MyLinkedList<String>();
+	public MyLinkedList<String> CastleKeep = new MyLinkedList<String>();
+	public MyLinkedList<String> CastleGrounds = new MyLinkedList<String>();
 	public MyLinkedList<String> Shack = new MyLinkedList<String>();
 	public MyLinkedList<String> Mountains = new MyLinkedList<String>();
+	public MyLinkedList<String> Volcano = new MyLinkedList<String>();
+	public MyLinkedList<String> DarkFort = new MyLinkedList<String>();
+	public MyLinkedList<String> DarkFortGround = new MyLinkedList<String>();
+	public MyLinkedList<String> Dungeon = new MyLinkedList<String>();
+	public MyLinkedList<String> Beach = new MyLinkedList<String>();
+	public MyLinkedList<String> OceanKeep = new MyLinkedList<String>();
 	
 	public String currentLoc = "Home";
 	
@@ -38,23 +47,47 @@ public class Location
 	
 	public void loc()
 	{
-		//System.out.println("This is the world of Zagaroth");
+		System.out.println("This is the world of Zagaroth");
 		
-		Home.append("Castle");
-		Home.append("Shack");
+		Home.append("FarmVillage");
+		Home.append("Beach");
+		Home.append("Mountains");
 		
-		Castle.append("Home");
-		Castle.append("Mountains");
+		FarmVillage.append("Home");
+		FarmVillage.append("Mountains");
+		FarmVillage.append("Shack");
+		FarmVillage.append("Castle");
+		FarmVillage.append("Beach");
 		
-		Shack.append("Home");
+		Castle.append("FarmVillage");
 		
-		Mountains.append("Castle");
+		CastleGrounds.append("Castle");
+		CastleGrounds.append("CastleKeep");
 		
-		//System.out.println(getCurrentLoc());
-		//setCurrentLoc("Castle");
-		//System.out.println(getCurrentLoc());
-		//System.out.println("Showing connected Locations");
-		//System.out.println(Castle);
+		CastleKeep.append("Castle");
+		CastleKeep.append("CastleGrounds");
+		
+		Shack.append("FarmVillage");
+		Shack.append("Mountains");
+		
+		Mountains.append("Home");
+		Mountains.append("FarmVillage");
+		Mountains.append("Shack");
+		Mountains.append("Volcano");
+		Mountains.append("DarkFort");
+		
+		Beach.append("OceanKeep");
+		Beach.append("Home");
+		Beach.append("FarmVillage");
+		
+		OceanKeep.append("Beach");
+		
+		Volcano.append("Mountains");
+		
+		DarkFort.append("Mountains");
+		DarkFort.append("DarkFortGround");
+		
+		DarkFortGround.append("DarkFort");
 		
 	}
 	
