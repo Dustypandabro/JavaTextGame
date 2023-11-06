@@ -1,0 +1,129 @@
+# Items and game Shit
+
+# Classes, methods and vars
+
+# BaseCharacter
+Vars:
+public String name
+public String type
+public int health 
+public int maxHealth
+public int def
+public int strength
+public int exp
+public int level
+public int stamina	
+public int gold
+
+Methods:
+public int dealDmg()
+public in takeDmg(int dmg)
+public String Say()
+public void checkLevelUp()
+public int getLevel()
+public int getMaxHeatlh()
+public void setMaxHeatlh(int mhp)
+public String getName()
+public void setName(String newName)
+public String getType()
+public int getHealth()
+public void setHealth(int hp
+public int getStrength()
+public void setStrength(int str)
+public int getDef()
+public void setDef(int sdef)
+public int getXP()
+public void setXP(int xp)
+public int getStam()
+public void setStam(int stam)
+public int getGold()
+public void setGold(int coin)
+
+# Barbarian
+Vars:
+public String type
+public int health
+public int maxHealth
+public int def
+public int strength
+public int stamina
+
+Methods:
+@Override
+public int dealDmg()
+@Override
+public int takeDmg(int dmg)
+@Override
+public String getType()
+@Override
+public int getMaxHeatlh()
+@Override
+public int getHealth()
+@Override
+public void setHealth(int hp)
+@Override
+public int getStrength()
+@Override
+public void setStrength(int str)
+@Override
+public int getDef()
+@Override
+public void setDef(int sdef)
+@Override
+public int getStam()
+@Override
+public void setStam(int stam)
+
+# Deathwalker
+Vars:
+public String type
+public int health
+public int maxHealth
+public int def
+public int strength
+public int stamina
+public int magic
+
+Methods:
+@Override
+public int dealDmg()
+@Override
+public int takeDmg(int dmg)
+@Override
+public String getType()
+@Override
+public int getMaxHeatlh()
+@Override
+public int getHealth()
+@Override
+public void setHealth(int hp
+@Override
+public int getStrength()
+@Override
+public void setStrength(int str)
+@Override
+public int getDef()
+@Override
+public void setDef(int sdef)
+@Override
+public int getStam()
+@Override
+public void setStam(int stam)
+public int getMagic()
+public void setMagic(int mana)
+
+# Hunter
+Vars:
+public String type
+public int health
+public int maxHealth
+public int def
+public int strength
+public int stamina
+
+Methods:
+
+
+
+
+
