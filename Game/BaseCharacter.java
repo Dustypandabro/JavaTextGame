@@ -176,7 +176,7 @@ public class BaseCharacter
 	
 	public void setGold(int coin)
 	{
-		this.gold += coin;
+		this.gold = coin;
 		
 	}
 	

@@ -60,6 +60,8 @@ public class Location
 		FarmVillage.append("Beach");
 		
 		Castle.append("FarmVillage");
+		Castle.append("CastleGrounds");
+		Castle.append("CastleKeep");
 		
 		CastleGrounds.append("Castle");
 		CastleGrounds.append("CastleKeep");

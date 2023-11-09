@@ -17,12 +17,19 @@ public class RunGameBoi
 	public int ctype = 0;
 	public int gdiff = 1;
 	public int dmgMod = 1;
+	public int playerActScan = 0;
 	public boolean firstTime = true;
 	public String bookName = "";
 	public BaseCharacter player = null;
 	public Book book1 = new Book();
 	public Location world = new Location();
+	public String prevLoc = "";
 	public Inventory playerInventory = new Inventory();
+	public Inventory farmVillageShopInventory = new Inventory();
+	public Inventory castleShopInventory = new Inventory();
+	public Inventory darkFortShopInventory = new Inventory();
+	public Inventory oceanKeepShopInventory = new Inventory();
+	public Reputation playerRep = new Reputation();
 	
 	///////////////////////////////
 	//Game settings
@@ -345,22 +352,103 @@ public class RunGameBoi
 	}
 	
 	///////////////////////////////
+	//Shop Shit
+	
+	public void buyFromVendor(Inventory inv, Items buyItem)
+	{
+		int itemPrice = buyItem.getValue();
+		int pGold = player.getGold();
+		int newGold = 0;
+		
+		if(pGold > itemPrice)
+		{
+			playerInventory.addToInventory(buyItem);
+			inv.removeItem(buyItem);
+			
+			newGold = pGold - itemPrice;
+			player.setGold(newGold);
+			
+		}
+		else
+		{
+			System.out.println("Not enough gold!");
+			
+		}
+		
+	}
+	
+	public void sellToVendor(Items sellItem, Inventory inv)
+	{
+		int itemPrice = sellItem.getValue();
+		int pGold = player.getGold();
+		int newGold = 0;
+		
+		playerInventory.removeItem(sellItem);
+		inv.addToInventory(sellItem);
+		
+		newGold = pGold + itemPrice;
+		player.setGold(newGold);
+		
+	}
+	
+	public void giveFarmShopShit()//Add each to game start methods
+	{
+		
+		
+	}
+	
+	public void farmShopOps()
+	{
+		playerInventory.showInventory();
+		
+		Items sLongsword = new Items();
+		sLongsword.createItem("Long sword", "Long swords", 35, 150);
+		
+		farmVillageShopInventory.addToInventory(sLongsword);
+		farmVillageShopInventory.showInventory();
+		
+		Scanner farmVilScan = new Scanner(System.in);
+		int fvso = farmVilScan.nextInt();
+		
+		System.out.println("Choose what to do in shop. 1/2");
+		
+		if(fvso == 1)
+		{
+			buyFromVendor(farmVillageShopInventory, sLongsword);
+			
+		}
+		else if(fvso == 2)
+		{
+			sellToVendor(sLongsword, farmVillageShopInventory);
+
+		}
+		else
+		{
+			System.out.println("Invalid option.");
+			
+		}
+		
+		playerInventory.showInventory();
+		farmVillageShopInventory.showInventory();
+			
+	}
+	
+	///////////////////////////////
 	//Player shit
 	
 	public void RepStuff()
 	{
-		Reputation rep = new Reputation();
-		rep.setHRep(60);
-		System.out.println(rep.getHRep());
+		/*playerRep.setHRep(60);
+		System.out.println(playerRep.getHRep());
 		System.out.println("Reset rep");
-		rep.setHRep(60);
-		System.out.println(rep.getHRep());
-		rep.setHRep(60);
-		System.out.println(rep.getHRep());
-		rep.setHRep(-190);
-		System.out.println(rep.getHRep());
-		rep.setHRep(-50);
-		System.out.println(rep.getHRep());
+		playerRep.setHRep(60);
+		System.out.println(playerRep.getHRep());
+		playerRep.setHRep(60);
+		System.out.println(playerRep.getHRep());
+		playerRep.setHRep(-190);
+		System.out.println(playerRep.getHRep());
+		playerRep.setHRep(-50);
+		System.out.println(playerRep.getHRep());*/
 		
 	}
 	
@@ -436,6 +524,25 @@ public class RunGameBoi
 	
 	///////////////////////////////
 	//Movement through the game
+	
+	public String getPrevLoc()
+	{
+		return prevLoc;
+		
+	}
+	
+	public void setPrevLoc(String loc)
+	{
+		prevLoc = loc;
+		
+	}
+	
+	public void returnPrevLocCuzRep()
+	{
+		System.out.println("Moving Back");
+		world.setCurrentLoc(getPrevLoc());
+		
+	}
 	
 	public void showConLoc()
 	{
@@ -668,12 +775,53 @@ public class RunGameBoi
 	public void movement()
 	{
 		showConLoc();
+		setPrevLoc(world.getCurrentLoc());
 		
 		System.out.print("Type in location: ");
 		Scanner whereTo = new Scanner(System.in);
 		String loc = whereTo.nextLine();
 		
-		moveToLoc(loc);
+		if(loc.equals("FarmVillage"))
+		{
+			if(checkFarmVillageRep())
+			{
+				moveToLoc(loc);
+				
+			}
+			
+		}
+		else if(loc.equals("Castle"))
+		{
+			if(checkCaslteRep())
+			{
+				moveToLoc(loc);
+				
+			}
+			
+		}
+		else if(loc.equals("DarkFort"))
+		{
+			if(checkDarkFortRep())
+			{
+				moveToLoc(loc);
+				
+			}
+			
+		}
+		else if(loc.equals("OceanKeep"))
+		{
+			if(checkOceanKeepRep())
+			{
+				moveToLoc(loc);
+				
+			}
+			
+		}
+		else
+		{
+			moveToLoc(loc);
+			
+		}
 		
 	}
 	
@@ -681,62 +829,62 @@ public class RunGameBoi
 	{	
 		if(world.getCurrentLoc().equals("Home"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			homeOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("FarmVillage"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			farmVillageOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("Castle"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			castleOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("CastleGrounds"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			castleGroundsOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("CastleKeep"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			castleKeepOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("Shack"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			shackOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("Mountains"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			mountainsOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("Volcano"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			volcanoOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("DarkFort"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			darkFortOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("DarkFortGround"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			darkFortGroundOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("Beach"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			beachOps();
 			
 		}
 		else if(world.getCurrentLoc().equals("OceanKeep"))
 		{
-			System.out.println("You are here: " + world.getCurrentLoc());
+			oceanKeepOps();
 			
 		}
 		else
@@ -750,6 +898,611 @@ public class RunGameBoi
 	}
 	
 	///////////////////////////////
+	//Location Rep checks
+	
+	public boolean checkFarmVillageRep()
+	{
+		int fvr = playerRep.getFVRep();
+		if(fvr > 95)
+		{
+			System.out.println("Very good rep. Rep: " + fvr);
+			return true;
+			
+		}
+		else if(fvr > 0)
+		{
+			System.out.println("Normal rep. Rep: " + fvr);
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("Work on rep man. Rep: " + fvr);
+			return false;
+			
+		}
+		
+	}
+	
+	public boolean checkCaslteRep()
+	{
+		int cr = playerRep.getCastleRep();
+		
+		if(cr > 95)
+		{
+			System.out.println("Very good rep.");
+			return true;
+			
+		}
+		else if(cr >= 0)
+		{
+			System.out.println("Normal rep " + cr);
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("Work on rep man");
+			return false;
+			
+		}
+		
+	}
+	
+	public boolean checkDarkFortRep()
+	{
+		int dfr = playerRep.getDarkFortRep();
+		
+		if(dfr > 95)
+		{
+			System.out.println("Very good rep.");
+			return true;
+			
+		}
+		else if(dfr > 0)
+		{
+			System.out.println("Normal rep");
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("Work on rep man");
+			return false;
+			
+		}
+		
+	}
+	
+	public boolean checkOceanKeepRep()
+	{
+		int okr = playerRep.getOceanKeepRep();
+		
+		if(okr > 95)
+		{
+			System.out.println("Very good rep.");
+			return true;
+			
+		}
+		else if(okr > 0)
+		{
+			System.out.println("Normal rep");
+			return true;
+			
+		}
+		else
+		{
+			System.out.println("Work on rep man");
+			return false;
+			
+		}
+		
+	}
+	
+	///////////////////////////////
+	//Location methods
+	
+	public void homeOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		System.out.println("2. Go to bed.");
+		System.out.println("3. Eat something.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else if(playerActScan == 2)
+				{
+					System.out.println("You take a quick nap.");
+					pasb = false;
+			
+				}
+				else if(playerActScan == 3)
+				{
+					System.out.println("You eat a bacon and cheese sandwich.");
+					pasb = false;
+				
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void farmVillageOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. Look in shop.");
+		System.out.println("2. Leave shop.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					farmShopOps();
+					pasb = false;
+			
+				}
+				else if(playerActScan == 2)
+				{
+					pasb = false;
+					
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void castleOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at csatle.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of the castle.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void castleGroundsOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void castleKeepOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void shackOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at shack.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at the shack.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void mountainsOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at drop.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look down.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void volcanoOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void darkFortOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void darkFortGroundOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void beachOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	public void oceanKeepOps()
+	{
+		System.out.println("You are here: " + world.getCurrentLoc());
+		System.out.println("What would you like to do here?");
+		System.out.println(" ");
+		System.out.println("1. look at house.");
+		
+		Scanner paScan = new Scanner(System.in);
+		boolean pasb = true;
+		
+		while(pasb)
+		{
+			try
+			{
+				playerActScan = paScan.nextInt();
+				
+				if(playerActScan == 1)
+				{
+					System.out.println("You look at your beaty of a house.");
+					pasb = false;
+			
+				}
+				else
+				{
+					System.out.println("Inavlid action");
+			
+				}
+				
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				paScan.next();
+				
+			}
+			
+		}
+		
+	}
+	
+	///////////////////////////////
 	//Main game method
 	
 	public void createGameSettings()
@@ -757,75 +1510,89 @@ public class RunGameBoi
 		SelectGamediff();
 		selectChar();
 		world.loc();
-		
+		playerRep.Reputation();
 		
 	}
 	
 	///////////////////////////////
 	//Game loop
+	
 	public void runGame()
 	{	
 		createGameSettings();
 		BaseCharacter p2 = new Barbarian();
+		player.setGold(1000);
+		playerRep.setCastleRep(-45);
 		//System.out.println(player.getHealth());
+		
+		Scanner action = new Scanner(System.in);
 		
 		while(isPlayeralive())
 		{
-			System.out.println("You are currently in -> " + world.getCurrentLoc());
-			System.out.println("What will you like to do?");
-			System.out.println("1. Explore current loc");
-			System.out.println("2. Exit");
-			System.out.println("3. Use book");
-			System.out.println("4. Battle");
-			System.out.println("5. Move");
-			System.out.println("6. Inventory shit");
+			try
+			{
+				System.out.println("You are currently in -> " + world.getCurrentLoc());
+				System.out.println("What will you like to do?");
+				System.out.println("1. Explore current loc");
+				System.out.println("2. Exit");
+				System.out.println("3. Use book");
+				System.out.println("4. Battle");
+				System.out.println("5. Move");
+				System.out.println("6. Inventory shit");
 			
-			Scanner action = new Scanner(System.in);
-			int act = action.nextInt();
+				int act = action.nextInt();
 			
-			if(act == 1)
-			{
-				explore();
+				if(act == 1)
+				{
+					explore();
 				
-			}
-			else if(act == 2)
-			{
-				killPlayer();
+				}
+				else if(act == 2)
+				{
+					killPlayer();
+					
+				}
+				else if(act == 3)
+				{
+					useBook();
 				
-			}
-			else if(act == 3)
-			{
-				useBook();
+				}
+				else if(act == 4)
+				{
+					Battle(p2);
 				
-			}
-			else if(act == 4)
-			{
-				Battle(p2);
+				}
+				else if(act == 5)
+				{
+					movement();
 				
-			}
-			else if(act == 5)
-			{
-				movement();
+				}
+				else if(act == 6)
+				{
+					invetoryShit();
 				
-			}
-			else if(act == 6)
-			{
-				invetoryShit();
+				}
+				else
+				{
+					System.out.println("Invalid");
 				
-			}
-			else
-			{
-				System.out.println("Invalid");
-				
-			}
+				}
 			
-			//Battle(p2); //player, p2);
+				//Battle(p2); //player, p2);
+			
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				action.next();
+				
+			}
 			
 		}
 		
 		//System.out.println(world.getCurrentLoc());
 		//System.out.println(dmgMod);
-		System.out.println("Done");
+		System.out.println("Thanks for playing!");
 		
 	}
 	
