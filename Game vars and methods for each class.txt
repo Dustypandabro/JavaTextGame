@@ -326,6 +326,14 @@ public int oceanKeepRep
 Methods:
 public int getHRep()
 public void setHRep(int rep)
+public int getFVRep()
+public void setFVRep(int rep)
+public int getCastleRep()
+public void setCastleRep(int rep)
+public int getDarkFortRep()
+public void setDarkFortRep(int rep)
+public int getOceanKeepRep()
+public void setOceanKeepRep(int rep)
 public void Reputation()
 
 # RunGameBoi
