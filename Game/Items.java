@@ -9,6 +9,7 @@ public class Items
 	public String itemName;
 	public String itemType;
 	public int dmgIncrease = 0;
+	public int hpIncrease = 0;
 	public int itemValue = 0;
 	public boolean itemEquiped = false;//add this shit
 	
@@ -90,6 +91,18 @@ public class Items
 	public int getDmgIn()
 	{
 		return dmgIncrease;
+		
+	}
+	
+	public void setHpIn(int hp)
+	{
+		hpIncrease = hp;
+		
+	}
+	
+	public int getHpIn()
+	{
+		return hpIncrease;
 		
 	}
 	

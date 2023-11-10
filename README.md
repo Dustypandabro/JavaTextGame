@@ -11,3 +11,4 @@ Char: bslsnce issues
 Quests: add quests and motivation to compplete game
 Items: Build items and shops and add to methods to later be added in create game file
 Rep: Add rep for all buildings needed and finish code
+Shop shit: add all shop stuff and items

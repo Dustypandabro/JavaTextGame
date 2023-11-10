@@ -308,46 +308,108 @@ public class RunGameBoi
 			
 		}
 		
-		System.out.println("What would you like to do?");
-		System.out.println("1. Read book.");
-		System.out.println("2. Write Book.");
-		System.out.println("3. Remove last line.");
 		Scanner baction = new Scanner(System.in);
-		int bact = baction.nextInt();
 		
 		boolean whilewrite = true;
+		boolean whilechoose = true;
+		int bact = 0;
 		
-		while(whilewrite)
+		while(whilechoose)
 		{
-			if(bact == 1)
+			whilewrite = true;
+			
+			System.out.println("What would you like to do?");
+			System.out.println("1. Read book.");
+			System.out.println("2. Write Book.");
+			System.out.println("3. Remove last line.");
+			System.out.println("4. Exit.");
+			
+			bact = baction.nextInt();
+			
+			while(whilewrite)
 			{
-				readFromBook(bookName);
-				whilewrite = false;
+				if(bact == 1)
+				{
+					readFromBook(bookName);
+					whilewrite = false;
+			
+				}
+				else if(bact == 2)
+				{
+					Scanner writeBook = new Scanner(System.in);
+					String writeb = writeBook.nextLine();
+					writeToBook(bookName, writeb);
+					whilewrite = false;
+			
+				}
+				else if(bact == 3)
+				{
+					removeLastLine(bookName);
+					whilewrite = false;
+			
+				}
+				else if(bact == 4)
+				{
+					whilewrite = false;
+					
+				}
+				else
+				{
+					System.out.println("Wrong number");
+				
+				}
 			
 			}
-			else if(bact == 2)
-			{
-				Scanner writeBook = new Scanner(System.in);
-				String writeb = writeBook.nextLine();
-				writeToBook(bookName, writeb);
-				whilewrite = false;
 			
+			System.out.println("Done, would you like to use the book again? 1.Yes or 2.No");
+			
+			Scanner cs = new Scanner(System.in);
+			int ics = 0;
+			
+			try
+			{
+				ics = cs.nextInt();
+			
+				if(ics == 1)
+				{
+					System.out.println("what else?");
+				
+				}
+				else if(ics == 2)
+				{
+					System.out.println("You close the book and think about what you wrote...");
+					whilechoose = false;
+				
+				}
+				else
+				{
+					System.out.println("Invalid");
+					
+				}
+				
 			}
-			else if(bact == 3)
+			catch(InputMismatchException e)
 			{
-				removeLastLine(bookName);
-				whilewrite = false;
-			
-			}
-			else
-			{
-				System.out.println("Wrong number");
-			
+				System.out.println("Inavlid action. Enter int.");
+				cs.next();
+				
 			}
 			
 		}
 		
 		//book1.DelBook(bName);
+		
+	}
+	
+	///////////////////////////////
+	//Shot Items
+	
+	public Items sLongsword = new Items();
+	public Items heathPotion = new Items();
+	
+	public void giveShopHealthPot(Inventory inv)
+	{
+		inv.addToInventory(heathPotion);
 		
 	}
 	
@@ -393,24 +455,20 @@ public class RunGameBoi
 	
 	public void giveFarmShopShit()//Add each to game start methods
 	{
-		
-		
-	}
-	
-	public void farmShopOps()
-	{
-		playerInventory.showInventory();
-		
-		Items sLongsword = new Items();
 		sLongsword.createItem("Long sword", "Long swords", 35, 150);
 		
 		farmVillageShopInventory.addToInventory(sLongsword);
-		farmVillageShopInventory.showInventory();
 		
-		Scanner farmVilScan = new Scanner(System.in);
+	}
+	
+	public void ShopOps()//Add choosing items // recreate this method to genererilize shop and to search for dialog
+	{	
+		farmVillageShopInventory.showInventory();//EG: get shop loc and print shop intro
+		
+		Scanner farmVilScan = new Scanner(System.in);//while loop shop convo and what player wanna do. Generalize and maybe add mid dialog
 		int fvso = farmVilScan.nextInt();
 		
-		System.out.println("Choose what to do in shop. 1/2");
+		System.out.println("Choose what to do in shop. 1/2");//print shop outro same as intro just dif method for outro dialog
 		
 		if(fvso == 1)
 		{
@@ -435,74 +493,6 @@ public class RunGameBoi
 	
 	///////////////////////////////
 	//Player shit
-	
-	public void RepStuff()
-	{
-		/*playerRep.setHRep(60);
-		System.out.println(playerRep.getHRep());
-		System.out.println("Reset rep");
-		playerRep.setHRep(60);
-		System.out.println(playerRep.getHRep());
-		playerRep.setHRep(60);
-		System.out.println(playerRep.getHRep());
-		playerRep.setHRep(-190);
-		System.out.println(playerRep.getHRep());
-		playerRep.setHRep(-50);
-		System.out.println(playerRep.getHRep());*/
-		
-	}
-	
-	public void questShit()
-	{
-		Quests MainQuest = new Quests();
-		MainQuest.createQuest("Main", "This is the main quest", "start the quest");
-		MainQuest.showQuestInfo();
-		
-		Quests SideQuest = new Quests();
-		SideQuest.createQuest("Side", "This is the side quest", "start the quest obj");
-		SideQuest.showQuestInfo();
-		
-		MainQuest.setComplete();
-		MainQuest.addQuestObjectives("Go to the Shack.");
-		MainQuest.addQuestObjectives("Go to the Mountain.");
-		MainQuest.addQuestObjectives("Go to the Castle.");
-		MainQuest.showQuestInfo();
-		MainQuest.finishQuestObj();
-		MainQuest.finishQuestObj();
-		MainQuest.isQuestDone();
-		SideQuest.isQuestDone();
-		MainQuest.finishQuestObj();
-		MainQuest.finishQuestObj();
-		MainQuest.showQuestInfo();
-		MainQuest.isQuestDone();
-		
-	}
-	
-	public void invetoryShit() // can be used for shop
-	{
-		Items Longsword = new Items();
-		Longsword.createItem("Long sword", "Long swords", 35, 150);
-		
-		Items sword = new Items();
-		sword.createItem("Sword", "Short sword", 25, 120);
-		sword.showItemInfo();
-		
-		playerInventory.addToInventory(sword);
-		playerInventory.addToInventory(Longsword);
-		playerInventory.showInventory();
-		System.out.println("Removing item");
-		playerInventory.removeItem(sword);
-		playerInventory.showInventory();
-		playerInventory.equipAnItem(sword);
-		System.out.println("Item equiped");
-		playerInventory.showEquipedItem();
-		System.out.println("Item equiped");
-		playerInventory.equipAnItem(Longsword);
-		playerInventory.showEquipedItem();
-		
-		System.out.println("Done");
-		
-	}
 	
 	public void killPlayer()
 	{
@@ -1075,7 +1065,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					farmShopOps();
+					ShopOps();
 					pasb = false;
 			
 				}
@@ -1511,6 +1501,7 @@ public class RunGameBoi
 		selectChar();
 		world.loc();
 		playerRep.Reputation();
+		giveFarmShopShit();
 		
 	}
 	
@@ -1522,7 +1513,7 @@ public class RunGameBoi
 		createGameSettings();
 		BaseCharacter p2 = new Barbarian();
 		player.setGold(1000);
-		playerRep.setCastleRep(-45);
+		//playerRep.setCastleRep(-45);
 		//System.out.println(player.getHealth());
 		
 		Scanner action = new Scanner(System.in);
@@ -1593,6 +1584,77 @@ public class RunGameBoi
 		//System.out.println(world.getCurrentLoc());
 		//System.out.println(dmgMod);
 		System.out.println("Thanks for playing!");
+		
+	}
+	
+	///////////////////////////////
+	//Demo Shit
+	
+	public void RepStuff()
+	{
+		/*playerRep.setHRep(60);
+		System.out.println(playerRep.getHRep());
+		System.out.println("Reset rep");
+		playerRep.setHRep(60);
+		System.out.println(playerRep.getHRep());
+		playerRep.setHRep(60);
+		System.out.println(playerRep.getHRep());
+		playerRep.setHRep(-190);
+		System.out.println(playerRep.getHRep());
+		playerRep.setHRep(-50);
+		System.out.println(playerRep.getHRep());*/
+		
+	}
+	
+	public void questShit()
+	{
+		/*Quests MainQuest = new Quests();
+		MainQuest.createQuest("Main", "This is the main quest", "start the quest");
+		MainQuest.showQuestInfo();
+		
+		Quests SideQuest = new Quests();
+		SideQuest.createQuest("Side", "This is the side quest", "start the quest obj");
+		SideQuest.showQuestInfo();
+		
+		MainQuest.setComplete();
+		MainQuest.addQuestObjectives("Go to the Shack.");
+		MainQuest.addQuestObjectives("Go to the Mountain.");
+		MainQuest.addQuestObjectives("Go to the Castle.");
+		MainQuest.showQuestInfo();
+		MainQuest.finishQuestObj();
+		MainQuest.finishQuestObj();
+		MainQuest.isQuestDone();
+		SideQuest.isQuestDone();
+		MainQuest.finishQuestObj();
+		MainQuest.finishQuestObj();
+		MainQuest.showQuestInfo();
+		MainQuest.isQuestDone();*/
+		
+	}
+	
+	public void invetoryShit() // can be used for shop
+	{
+		/*Items Longsword = new Items();
+		Longsword.createItem("Long sword", "Long swords", 35, 150);
+		
+		Items sword = new Items();
+		sword.createItem("Sword", "Short sword", 25, 120);
+		sword.showItemInfo();
+		
+		playerInventory.addToInventory(sword);
+		playerInventory.addToInventory(Longsword);
+		playerInventory.showInventory();
+		System.out.println("Removing item");
+		playerInventory.removeItem(sword);
+		playerInventory.showInventory();
+		playerInventory.equipAnItem(sword);
+		System.out.println("Item equiped");
+		playerInventory.showEquipedItem();
+		System.out.println("Item equiped");
+		playerInventory.equipAnItem(Longsword);
+		playerInventory.showEquipedItem();
+		
+		System.out.println("Done");*/
 		
 	}
 	
