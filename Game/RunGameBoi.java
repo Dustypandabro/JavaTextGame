@@ -47,39 +47,50 @@ public class RunGameBoi
 		boolean diffselect = false;
 		String gds = "Easy";
 		
+		Scanner diff_in = new Scanner(System.in);
+		
 		while(diffselect != true)
 		{
-			Scanner diff_in = new Scanner(System.in);
-			gdiff = diff_in.nextInt();
+			try
+			{
+				gdiff = diff_in.nextInt();
 		
-			if(gdiff == 1)
-			{
-				GameDiff gamediffs = GameDiff.EASY;
-				gds = "Easy";
-				System.out.println("The diff of the game is: " + gamediffs);
-				diffselect = true;
+				if(gdiff == 1)
+				{
+					GameDiff gamediffs = GameDiff.EASY;
+					gds = "Easy";
+					System.out.println("The diff of the game is: " + gamediffs);
+					diffselect = true;
 			
+				}
+				else if(gdiff == 2)
+				{
+					GameDiff gamediffs = GameDiff.MEDIUM;
+					gds = "Med";
+					System.out.println("The diff of the game is: " + gamediffs);
+					diffselect = true;
+			
+				}
+				else if(gdiff == 3)
+				{
+					GameDiff gamediffs = GameDiff.HARD;
+					gds = "Hard";
+					System.out.println("The diff of the game is: " + gamediffs);
+					diffselect = true;
+			
+				}
+				else
+				{
+					System.out.println("It must be one of those numbers!");
+			
+				}
+				
 			}
-			else if(gdiff == 2)
+			catch(InputMismatchException e)
 			{
-				GameDiff gamediffs = GameDiff.MEDIUM;
-				gds = "Med";
-				System.out.println("The diff of the game is: " + gamediffs);
-				diffselect = true;
-			
-			}
-			else if(gdiff == 3)
-			{
-				GameDiff gamediffs = GameDiff.HARD;
-				gds = "Hard";
-				System.out.println("The diff of the game is: " + gamediffs);
-				diffselect = true;
-			
-			}
-			else
-			{
-				System.out.println("It must be one of those numbers!");
-			
+				System.out.println("Inavlid action. Enter int.");
+				diff_in.next();
+				
 			}
 			
 		}
@@ -103,66 +114,77 @@ public class RunGameBoi
 		////////////////////////////
 		
 		Scanner ct = new Scanner(System.in);
-		int ctype = ct.nextInt();
 		boolean charselect = false;
 		
 		while(charselect != true)
-		{
-			switch(ctype)
+		{	
+			try
 			{
-				case(1):
+				ctype = ct.nextInt();
+				
+				switch(ctype)
 				{
-					//Normal
-					player = new BaseCharacter();
-					charselect = true;
-					break;
+					case(1):
+					{
+						//Normal
+						player = new BaseCharacter();
+						charselect = true;
+						break;
 					
-				}
-				case(2):
-				{
-					//Wizard
-					player = new Wizard();
-					charselect = true;
-					break;
+					}
+					case(2):
+					{
+						//Wizard
+						player = new Wizard();
+						charselect = true;
+						break;
 					
-				}
-				case(3):
-				{
-					//Barbarian
-					player = new Barbarian();
-					charselect = true;
-					break;
+					}
+					case(3):
+					{
+						//Barbarian
+						player = new Barbarian();
+						charselect = true;
+						break;
 					
-				}
-				case(4):
-				{
-					//Viking
-					player = new Viking();
-					charselect = true;
-					break;
+					}
+					case(4):
+					{
+						//Viking
+						player = new Viking();
+						charselect = true;
+						break;
 					
-				}
-				case(5):
-				{
-					//Hunter
-					player = new Hunter();
-					charselect = true;
-					break;
+					}
+					case(5):
+					{
+						//Hunter
+						player = new Hunter();
+						charselect = true;
+						break;
 					
-				}
-				case(6):
-				{
-					//Deathwalker
-					player = new Deathwalker();
-					charselect = true;
-					break;
+					}
+					case(6):
+					{
+						//Deathwalker
+						player = new Deathwalker();
+						charselect = true;
+						break;
 					
-				}
-				default:
-				{
-					System.out.println("Must be between 1 and 6");
+					}
+					default:
+					{
+						System.out.println("Must be between 1 and 6");
 					
+					}
+				
 				}
+			
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Inavlid action. Enter int.");
+				ct.next();
 				
 			}
 			
