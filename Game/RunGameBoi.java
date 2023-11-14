@@ -426,12 +426,51 @@ public class RunGameBoi
 	///////////////////////////////
 	//Shot Items
 	
-	public Items sLongsword = new Items();
-	public Items heathPotion = new Items();
+	public Items shortLongsword = new Items();//Barbarian
+	public Items smallWarhammer = new Items();//Viking
+	public Items shortStaff = new Items();//Wizard
+	public Items bluntDaggers = new Items();//Hunter
+	public Items shortWhip = new Items();//Deathwalker
+	
+	public Items originalLongsword = new Items();
+	public Items longToothWarhammer = new Items();
+	public Items blueStaff = new Items();
+	public Items hazelDaggers = new Items();
+	public Items fireWhip = new Items();
+	
+	public Items arthursLongsword = new Items();
+	public Items nordicWarhammer = new Items();
+	public Items staffOfGoodJuJU = new Items();
+	public Items magicDaggers = new Items();
+	public Items whipOfHades = new Items();
+	
+	public Items clownsLongsword = new Items();
+	public Items sqweekyWarhammer = new Items();
+	public Items wabbajack = new Items();
+	public Items featherDaggers = new Items();
+	public Items smWhip = new Items();
+	
+	public Items healthPotion = new Items();
 	
 	public void giveShopHealthPot(Inventory inv)
 	{
-		inv.addToInventory(heathPotion);
+		inv.addToInventory(healthPotion);
+		
+	}
+	
+	public void useHealthPotion()
+	{
+		if(playerInventory.contains(healthPotion.getName()))
+		{
+			player.setHealth(player.getMaxHeatlh());
+			playerInventory.removeItem(healthPotion);
+			
+		}
+		else
+		{
+			System.out.println("No health potion");
+			
+		}
 		
 	}
 	
@@ -475,17 +514,139 @@ public class RunGameBoi
 		
 	}
 	
-	public void giveFarmShopShit()//Add each to game start methods
+	public void giveFarmShopShit()//balance all items
 	{
-		sLongsword.createItem("Long sword", "Long swords", 35, 150);
+		shortLongsword.createItem("Short long sword", "Long swords", 35, 150);//
+		smallWarhammer.createItem("Small warhammer", "Warhammer", 3, 150);//
+		shortStaff.createItem("Short staff", "Staff", 5, 150);//
+		bluntDaggers.createItem("Blunt daggers", "Dagger", 3, 150);//
+		shortWhip.createItem("Short whip", "Whip", 5, 150);//
 		
-		farmVillageShopInventory.addToInventory(sLongsword);
+		farmVillageShopInventory.addToInventory(shortLongsword);
+		farmVillageShopInventory.addToInventory(smallWarhammer);
+		farmVillageShopInventory.addToInventory(shortStaff);
+		farmVillageShopInventory.addToInventory(bluntDaggers);
+		farmVillageShopInventory.addToInventory(shortWhip);
+		
+	}
+	
+	public void giveCastleShopShit()
+	{
+		originalLongsword.createItem("Short long sword", "Long swords", 35, 150);//
+		longToothWarhammer.createItem("Small warhammer", "Warhammer", 3, 150);//
+		blueStaff.createItem("Short staff", "Staff", 5, 150);//
+		hazelDaggers.createItem("Blunt daggers", "Dagger", 3, 150);//
+		fireWhip.createItem("Short whip", "Whip", 5, 150);//
+		
+		castleShopInventory.addToInventory(originalLongsword);
+		castleShopInventory.addToInventory(longToothWarhammer);
+		castleShopInventory.addToInventory(blueStaff);
+		castleShopInventory.addToInventory(hazelDaggers);
+		castleShopInventory.addToInventory(fireWhip);
+		
+	}
+	
+	public void giveOceanShopShit()
+	{
+		arthursLongsword.createItem("Short long sword", "Long swords", 35, 150);//
+		nordicWarhammer.createItem("Small warhammer", "Warhammer", 3, 150);//
+		staffOfGoodJuJU.createItem("Short staff", "Staff", 5, 150);//
+		magicDaggers.createItem("Blunt daggers", "Dagger", 3, 150);//
+		whipOfHades.createItem("Short whip", "Whip", 5, 150);//
+		
+		castleShopInventory.addToInventory(arthursLongsword);
+		castleShopInventory.addToInventory(nordicWarhammer);
+		castleShopInventory.addToInventory(staffOfGoodJuJU);
+		castleShopInventory.addToInventory(magicDaggers);
+		castleShopInventory.addToInventory(whipOfHades);
+		
+	}
+	
+	public void giveDarkFortShopShit()
+	{
+		clownsLongsword.createItem("Short long sword", "Long swords", 35, 150);//
+		sqweekyWarhammer.createItem("Small warhammer", "Warhammer", 3, 150);//
+		wabbajack.createItem("Short staff", "Staff", 5, 150);//
+		featherDaggers.createItem("Blunt daggers", "Dagger", 3, 150);//
+		smWhip.createItem("Short whip", "Whip", 5, 150);//
+		
+		castleShopInventory.addToInventory(clownsLongsword);
+		castleShopInventory.addToInventory(sqweekyWarhammer);
+		castleShopInventory.addToInventory(wabbajack);
+		castleShopInventory.addToInventory(featherDaggers);
+		castleShopInventory.addToInventory(smWhip);
+		
+	}
+	
+	public void giveAllShopShit()
+	{
+		giveCastleShopShit();
+		giveDarkFortShopShit();
+		giveFarmShopShit();
+		giveOceanShopShit();
+		
+	}
+	
+	public Inventory getShopInv()
+	{
+		String cl = world.getCurrentLoc();
+		Inventory inv = new Inventory();
+		
+		if(cl.equals("FarmVillage"))
+		{
+			inv = farmVillageShopInventory;
+			
+		}
+		else if(cl.equals("CastleGrounds"))
+		{
+			inv = castleShopInventory;
+			
+		}
+		else if(cl.equals("DarkFortGround"))
+		{
+			inv = darkFortShopInventory;
+			
+		}
+		else if(cl.equals("OceanKeep"))
+		{
+			inv = oceanKeepShopInventory;
+			
+		}
+		else
+		{
+			System.out.println("Invalid.");
+			
+		}
+		
+		return inv;
 		
 	}
 	
 	public void ShopOps()//Add choosing items // recreate this method to genererilize shop and to search for dialog
 	{	
-		farmVillageShopInventory.showInventory();//EG: get shop loc and print shop intro
+		Inventory inv = getShopInv();
+		
+		inv.showInventory();
+		
+		System.out.println("Choose what to do in shop. 1/2");
+		
+		if(fvso == 1)
+		{
+			buyFromVendor(inv, shortLongsword);
+			
+		}
+		else if(fvso == 2)
+		{
+			sellToVendor(shortLongsword, inv);
+
+		}
+		else
+		{
+			System.out.println("Invalid option.");
+			
+		}
+		
+		/*farmVillageShopInventory.showInventory();//EG: get shop loc and print shop intro
 		
 		Scanner farmVilScan = new Scanner(System.in);//while loop shop convo and what player wanna do. Generalize and maybe add mid dialog
 		int fvso = farmVilScan.nextInt();
@@ -494,12 +655,12 @@ public class RunGameBoi
 		
 		if(fvso == 1)
 		{
-			buyFromVendor(farmVillageShopInventory, sLongsword);
+			buyFromVendor(farmVillageShopInventory, shortLongsword);
 			
 		}
 		else if(fvso == 2)
 		{
-			sellToVendor(sLongsword, farmVillageShopInventory);
+			sellToVendor(shortLongsword, farmVillageShopInventory);
 
 		}
 		else
@@ -509,7 +670,7 @@ public class RunGameBoi
 		}
 		
 		playerInventory.showInventory();
-		farmVillageShopInventory.showInventory();
+		farmVillageShopInventory.showInventory();*/
 			
 	}
 	
@@ -837,7 +998,7 @@ public class RunGameBoi
 		
 	}
 	
-	public void explore() //add more locations and build
+	public void explore()
 	{	
 		if(world.getCurrentLoc().equals("Home"))
 		{
@@ -1119,7 +1280,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at csatle.");
+		System.out.println("1. look at castle.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1159,7 +1320,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. look in Castle shop.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1172,7 +1333,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					ShopOps();
 					pasb = false;
 			
 				}
@@ -1199,7 +1360,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. Talk to the King.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1212,7 +1373,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					System.out.println("The King looks at you and says 'Sup'.");
 					pasb = false;
 			
 				}
@@ -1252,7 +1413,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at the shack.");
+					System.out.println("You look at the shack and see something wiggle.");
 					pasb = false;
 			
 				}
@@ -1292,7 +1453,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look down.");
+					System.out.println("You look down and wonder what could have been.");
 					pasb = false;
 			
 				}
@@ -1319,7 +1480,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. look at Volcano.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1332,7 +1493,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					System.out.println("You look at the volcano, it feels hot. Suddenly you see a door in the far, what could it be?");
 					pasb = false;
 			
 				}
@@ -1359,7 +1520,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. look around.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1372,7 +1533,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					System.out.println("Everything is coverd in dark vines and it looks spooky, hope nothing bad lurks around.");
 					pasb = false;
 			
 				}
@@ -1399,7 +1560,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. look in shop.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1412,7 +1573,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					ShopOps();
 					pasb = false;
 			
 				}
@@ -1439,7 +1600,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. look at beach.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1452,7 +1613,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					System.out.println("You look at your beaty of the beach and wonder what would happen if you lay down your weapon and retire with your feet in the sand. Suddenly you remeber how fucking cool you are and shout heroic!");
 					pasb = false;
 			
 				}
@@ -1479,7 +1640,7 @@ public class RunGameBoi
 		System.out.println("You are here: " + world.getCurrentLoc());
 		System.out.println("What would you like to do here?");
 		System.out.println(" ");
-		System.out.println("1. look at house.");
+		System.out.println("1. look in ocean shop.");
 		
 		Scanner paScan = new Scanner(System.in);
 		boolean pasb = true;
@@ -1492,7 +1653,7 @@ public class RunGameBoi
 				
 				if(playerActScan == 1)
 				{
-					System.out.println("You look at your beaty of a house.");
+					ShopOps();
 					pasb = false;
 			
 				}
@@ -1523,26 +1684,18 @@ public class RunGameBoi
 		selectChar();
 		world.loc();
 		playerRep.Reputation();
-		giveFarmShopShit();
+		giveAllShopShit();
 		
 	}
 	
 	///////////////////////////////
 	//Game loop
 	
-	public void runGame()
-	{	
-		createGameSettings();
-		BaseCharacter p2 = new Barbarian();
-		player.setGold(1000);
-		//playerRep.setCastleRep(-45);
-		//System.out.println(player.getHealth());
-		
+	public void play()
+	{
 		Scanner action = new Scanner(System.in);
 		
-		while(isPlayeralive())
-		{
-			try
+		try
 			{
 				System.out.println("You are currently in -> " + world.getCurrentLoc());
 				System.out.println("What will you like to do?");
@@ -1572,7 +1725,7 @@ public class RunGameBoi
 				}
 				else if(act == 4)
 				{
-					Battle(p2);
+					//Battle(p2);
 				
 				}
 				else if(act == 5)
@@ -1600,11 +1753,23 @@ public class RunGameBoi
 				action.next();
 				
 			}
+		
+	}
+	
+	public void runGame()
+	{	
+		createGameSettings();
+		
+		//System.out.println(playerInventory.equipedItem.getName());
+		//playerInventory.equipAnItem(shortLongsword);
+		//System.out.println(playerInventory.equipedItem.getName());
+		
+		while(isPlayeralive())
+		{
+			play();
 			
 		}
 		
-		//System.out.println(world.getCurrentLoc());
-		//System.out.println(dmgMod);
 		System.out.println("Thanks for playing!");
 		
 	}

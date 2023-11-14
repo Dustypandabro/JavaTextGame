@@ -26,6 +26,21 @@ public class Inventory
 		
 	}
 	
+	public boolean contains(String name)
+	{
+		if(inventory.contains(name))
+		{
+			return true;
+			
+		}
+		else
+		{
+			return false;
+			
+		}
+		
+	}
+	
 	public void addToInventory(Items item)
 	{
 		inventory.append(item.getName());
