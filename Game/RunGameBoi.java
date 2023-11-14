@@ -629,6 +629,8 @@ public class RunGameBoi
 		inv.showInventory();
 		
 		System.out.println("Choose what to do in shop. 1/2");
+		Scanner shopScan = new Scanner(System.in);
+		int fvso = shopScan.nextInt();
 		
 		if(fvso == 1)
 		{
