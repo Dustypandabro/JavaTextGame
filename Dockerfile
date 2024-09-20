@@ -8,7 +8,8 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Compile Java files
-RUN javac *.java
+# RUN javac *.java
+RUN /Game CompileAll.bat
 
 # Run the game when the container launches
-CMD ["java", "Main"]
+# CMD ["java", "Main"]
